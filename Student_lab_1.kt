@@ -12,22 +12,42 @@ class Student (
         companion object {
             private val phoneRegex = Regex("""^\+?[0-9]{10,15}$""")
             fun CheckPhone(value: String?) = value == null || phoneRegex.matches(value)
+
+            private val nameRegex = Regex("""^[\p{L}-]+$""")
+            fun CheckName(value: String) = nameRegex.matches(value)
+
+            private val telegramRegex = Regex("""^@\w{5,32}$""")
+            fun CheckTelegram(value: String?) = value == null || telegramRegex.matches(value)
+
+            private val emailRegex = Regex("""^[A-Za-z0-9_+-]+(\.[A-Za-z0-9_+-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)+$""")
+            fun CheckEmail(value: String?) = value == null || emailRegex.matches(value)
+
+            private val gitRegex = Regex("""^(https?://)?([A-Za-z0-9]+\.)?[A-Za-z0-9]+\.[A-Za-z0-9]+/[A-Za-z0-9_-]+/?$""")
+            fun CheckGit(value: String?) = value == null || gitRegex.matches(value)
+
+            fun CheckSecondname(value: String) = value.isEmpty() || CheckName(value)
+
         }
         var name = name
         get() = field
         set(value) {
-            field = value
+            if (CheckName(value)) field = value
+                else throw IllegalArgumentException("Name is incorrect")
         }
         var surname = surname
         get() = field
         set(value) {
-            field = value
+            if (CheckName(value)) field = value
+            else throw IllegalArgumentException("Surname is incorrect")
         }
+
         var secondname = secondname
         get() = field
         set(value) {
-            field = value
+            if (CheckSecondname(value)) field = value
+            else throw IllegalArgumentException("Secondname is incorrect")
         }
+
         var phone = phone
             get() = field
             set(value) {
@@ -37,18 +57,23 @@ class Student (
         var telegram = telegram
             get() = field
             set(value) {
-                field = value
+                if (CheckTelegram(value)) field = value
+                else throw IllegalArgumentException("Inavlid name for nick in telegram")
             }
         var email = email
         get() = field
         set(value) {
-            field = value
+            if (CheckEmail(value)) field = value
+            else throw IllegalArgumentException("Email adress is invalid")
         }
+
         var git = git
         get() = field
         set(value) {
-            field = value
-        }
+            if (CheckGit(value)) field = value
+            else throw IllegalArgumentException("Git link is invalid")
+            }
+
     init {
         this.surname = surname
         this.name = name
