@@ -122,6 +122,18 @@ class Student (
             return "$str\n"
         }
         fun show() = println(this.toString())
+        
+        fun anyGit(): Boolean {
+            val result = git != null
+            println("У студента $surname $name $secondname гит ${if (result) "при" else "от"}сутствует!")
+            return result
+        }
+        
+        fun anyContact(): Boolean {
+            val result = phone != null || telegram != null || email != null
+            println("Студент $surname $name $secondname , контакты:  ${if (result) "ЕСТЬ" else "НЕТ"}")
+            return result
+        }
 
     }
 
@@ -177,4 +189,7 @@ fun main() {
     )),
     )
     students.forEach { it.show() }
+    //check contacts
+    students.forEach { it.anyGit() }
+    students.forEach { it.anyContact() }
 }
