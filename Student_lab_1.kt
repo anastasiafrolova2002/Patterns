@@ -1,14 +1,18 @@
 class Student (
     val ID: Int,
-    name: String, 
-    surname: String, 
+    name: String,
+    surname: String,
     secondname: String,
-    phone: String? = null, 
+    phone: String? = null,
     telegram: String? = null,
-    email: String? = null, 
+    email: String? = null,
     git: String? = null
 )
     {
+        companion object {
+            private val phoneRegex = Regex("""^\+?[0-9]{10,15}$""")
+            fun CheckPhone(value: String?) = value == null || phoneRegex.matches(value)
+        }
         var name = name
         get() = field
         set(value) {
@@ -25,15 +29,16 @@ class Student (
             field = value
         }
         var phone = phone
-        get() = field
-        set(value) {
-            field = value
-        }
+            get() = field
+            set(value) {
+                if (CheckPhone(value)) field = value
+                else throw IllegalArgumentException("Number is incorrect")
+            }
         var telegram = telegram
-        get() = field
-        set(value) {
-            field = value
-        }
+            get() = field
+            set(value) {
+                field = value
+            }
         var email = email
         get() = field
         set(value) {
@@ -44,8 +49,16 @@ class Student (
         set(value) {
             field = value
         }
+    init {
+        this.surname = surname
+        this.name = name
+        this.secondname = secondname
+        this.phone = phone
+        this.telegram = telegram
+        this.email = email
+        this.git = git
+    }
 
-        
         constructor(ID: Int,
                     surname: String,
                     name: String,
@@ -64,7 +77,7 @@ class Student (
             this.git = git
         }
 
-          constructor(hashMap: Map<String, Any>) : this(
+        constructor(hashMap: Map<String, Any>) : this(
             hashMap["ID"]       as  Int,
             hashMap["surname"]  as  String,
             hashMap["name"]     as  String,
@@ -74,7 +87,7 @@ class Student (
             hashMap["email"]    as? String,
             hashMap["git"]      as? String,
         )
-        
+
         override fun toString(): String {
             var str = "[ID $ID] $surname $name $secondname"
             if (phone != null) str += "\nНомер телефона: $phone"
@@ -84,6 +97,7 @@ class Student (
             return "$str\n"
         }
         fun show() = println(this.toString())
+
     }
 
     
@@ -127,6 +141,14 @@ fun main() {
         "surname" to "Frolova",
         "secondname" to "Aleksandrovna",
         "email" to "blumwinx2000@mail.com"
+    )),
+    Student(mapOf(
+        "ID" to 6,
+        "name" to "Irina",
+        "surname" to "IX",
+        "secondname" to "no secondname",
+        "email" to "lol2000@mail.com",
+        "phone" to "9999lol"
     )),
     )
     students.forEach { it.show() }
