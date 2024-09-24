@@ -134,6 +134,15 @@ class Student (
             println("Студент $surname $name $secondname , контакты:  ${if (result) "ЕСТЬ" else "НЕТ"}")
             return result
         }
+        
+         fun setContacts(hashMap: Map<String, String?>) {
+            if (hashMap.containsKey("phone"))
+                phone = hashMap["phone"]
+            if (hashMap.containsKey("telegram"))
+                telegram = hashMap["telegram"]
+            if (hashMap.containsKey("email"))
+                email = hashMap["email"]
+        }
 
     }
 
@@ -192,4 +201,7 @@ fun main() {
     //check contacts
     students.forEach { it.anyGit() }
     students.forEach { it.anyContact() }
+
+    students[1].setContacts(mapOf("telegram" to null, "email" to "newemail@com.com"))
+    students[1].show()
 }
