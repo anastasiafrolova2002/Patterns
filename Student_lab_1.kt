@@ -1,3 +1,6 @@
+import java.io.File
+import java.io.FileNotFoundException
+
 class Student (
     override val id: Int,
     name: String,
@@ -8,6 +11,19 @@ class Student (
     email: String? = null,
     git: String? = null
 ): SudentAbst(){
+    
+    companion object {
+        fun readFromTxt(filePath: String): List<Student> {
+            val file = File(filePath)
+            if (!file.exists()) throw FileNotFoundException("File '$filePath' not found")
+            return buildList {
+                for (line in file.readLines()) {
+                    add(Student(line))
+                }
+            }
+        }
+    }
+    
         var name = name
         get() = field
         set(value) {
