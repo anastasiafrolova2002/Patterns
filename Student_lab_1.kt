@@ -15,10 +15,19 @@ class Student (
     companion object {
         fun readFromTxt(filePath: String): List<Student> {
             val file = File(filePath)
-            if (!file.exists()) throw FileNotFoundException("File '$filePath' not found")
+            if (!file.exists()) throw FileNotFoundException("Файл '$filePath' не найден")
             return buildList {
+                var currentLine = 1
                 for (line in file.readLines()) {
-                    add(Student(line))
+                    if (line.isNotEmpty()) {
+                        try {
+                            add(Student(line))
+                        }
+                        catch (e: Exception) {
+                            throw Exception("Reading ERROR '$filePath', line $currentLine: ${e.message}")
+                        }
+                    }
+                    currentLine++
                 }
             }
         }
@@ -173,6 +182,11 @@ class Student (
                 email = hashMap["email"]
         }
     }
+
+fun FileTestLab2() {
+    val studList = Student.readFromTxt("C://Users//User//IdeaProjects//mpjjj1//src//testfile_lab2.txt")
+    studList.forEach { println(it.getInfoSt()) }
+}    
     
 fun main() {
     val students = mutableListOf(
@@ -256,4 +270,6 @@ fun lab2() {
         StudentShort(7, "Студент Иванов Н. Н., git: https://github.com/ivan, связаться можно по номеру телефона: +79528459855")
     )
     StudentsSHORT.forEach { it.show() }
+    print("\nEx 7:\n")
+    FileTestLab2()
 }
