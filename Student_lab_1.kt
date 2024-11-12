@@ -129,6 +129,25 @@ class Student (
             row[7].ifEmpty { null }
         )
         
+        fun getInfoSt() : String {
+            val contactText = mapOf(
+                "phone" to "номер телефона",
+                "telegram" to "Telegram",
+                "email" to "электронная почта"
+            )
+            val git = "git${if (this.git != null) ": ${this.git}" else " не указан"}"
+            val contact = getContact().let {
+                if (it != null) "${contactText[it.first]}: ${it.second}" else "контакты не указаны"
+            }
+            return "Студент ${getInitials()}, $git, $contact"
+        }
+        private fun getInitials() = "$name ${surname[0]}.${if (secondname.isNotEmpty()) " ${secondname[0]}." else ""}"
+        private fun getContact() =
+            if      (phone != null) Pair("phone", phone)
+            else if (telegram != null) Pair("telegram", telegram)
+            else if (email != null) Pair("email", email)
+            else null
+
         override fun toString(): String {
             var str = "[ID $ID] $surname $name $secondname"
             if (phone != null) str += "\nНомер телефона: $phone"
@@ -230,8 +249,9 @@ fun lab2() {
         Student("3,Иванов,Иван,Иванович,,@ivan2002,,https://github.com/ivan_200002"),
         Student("4,Surname,Name,SecondName,,,,https://gitlab.com/user"),
         Student("5,Вишня,Олег,Петросович,,,cherry@mail.com,"),
-        Student("5.5,Вишня2,Олег2,Петросович2,,,cherry2@mail.com,"),
+        //Student("5.5,Вишня2,Олег2,Петросович2,,,cherry2@mail.com,"),
     )
 
     students.forEach { it.show() }
+    students.forEach { println(it.getInfoSt())}
 }
