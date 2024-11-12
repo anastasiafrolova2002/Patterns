@@ -113,6 +113,19 @@ class Student (
             hashMap["git"]      as? String,
         )
 
+        constructor(row: String) : this(row.split(','))
+
+        private constructor(row: List<String>) : this(
+            row[0].toInt(),
+            row[1],
+            row[2],
+            row[3],
+            row[4].ifEmpty { null },
+            row[5].ifEmpty { null },
+            row[6].ifEmpty { null },
+            row[7].ifEmpty { null }
+        )
+        
         override fun toString(): String {
             var str = "[ID $ID] $surname $name $secondname"
             if (phone != null) str += "\nНомер телефона: $phone"
@@ -204,4 +217,17 @@ fun main() {
 
     students[1].setContacts(mapOf("telegram" to null, "email" to "newemail@com.com"))
     students[1].show()
+    println("\nLab 2 results:\n")
+    lab2()
+}
+fun lab2() {
+    val students = mutableListOf(
+        Student("1,Фролова,Анастасия,Александровна,,,,"),
+        Student("2,Фамилия,Имя,Отчество,+79528459854,@mail_heck,ex@example.com,https://github.com/git_check"),
+        Student("3,Иванов,Иван,Иванович,,@ivan2002,,https://github.com/ivan_200002"),
+        Student("4,Surname,Name,SecondName,,,,https://gitlab.com/user"),
+        Student("5,Вишня,Олег,Петросович,,,cherry@mail.com,")
+    )
+
+    students.forEach { it.show() }
 }
