@@ -206,7 +206,25 @@ fun FileTestLab2() {
     studList2.forEach { println(it.getInfoSt()) }
     require(studList2.toString() == studList.toString())
 }    
-    
+
+
+fun part2_lb2() {
+    val studList = Student.readFromTxt("C://Users//User//IdeaProjects//mpjjj1//src//testfile_lab2.txt").map { StudentShort(it) }
+    studList.forEach { it.show() }
+    val dataList = DataListStudentShort(studList)
+    val names = dataList.getNames()
+    println(names)
+    dataList.select(0)
+    dataList.select(2)
+    val dataTable = dataList.getData()
+    for (i in 0..<dataTable.getRowAmount()) {
+        for (j in 0..<dataTable.getColAmount()) {
+            print("${dataTable[i, j]} ")
+        }
+        println()
+    }
+}
+
 fun main() {
     val students = mutableListOf(
 
@@ -291,4 +309,7 @@ fun lab2() {
     StudentsSHORT.forEach { it.show() }
     print("\nEx 7:\n")
     FileTestLab2()
+
+    print("\nPart 2:\n")
+    part2_lb2()
 }
