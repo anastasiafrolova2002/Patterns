@@ -195,8 +195,16 @@ class Student (
     }
 
 fun FileTestLab2() {
+    //read
     val studList = Student.readFromTxt("C://Users//User//IdeaProjects//mpjjj1//src//testfile_lab2.txt")
     studList.forEach { println(it.getInfoSt()) }
+
+    //write to
+    Student.writeToTxt("C://Users//User//IdeaProjects//mpjjj1//src//testfileOUT_lab2.txt", studList)
+    val studList2 = Student.readFromTxt("C://Users//User//IdeaProjects//mpjjj1//src//testfile_lab2.txt")
+    println()
+    studList2.forEach { println(it.getInfoSt()) }
+    require(studList2.toString() == studList.toString())
 }    
     
 fun main() {
