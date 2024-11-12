@@ -113,10 +113,13 @@ class Student (
             hashMap["git"]      as? String,
         )
 
-        constructor(row: String) : this(row.split(','))
+        constructor(row: String) : this(row.split(',').also {
+            if (it.size != 8 || it.any { "\n" in it })
+                throw IllegalArgumentException("The format is invalid")
+        })
 
         private constructor(row: List<String>) : this(
-            row[0].toInt(),
+            row[0].toIntOrNull().let { it ?: throw IllegalArgumentException("Invalid id. Supposed to be natural") },
             row[1],
             row[2],
             row[3],
@@ -226,7 +229,8 @@ fun lab2() {
         Student("2,Фамилия,Имя,Отчество,+79528459854,@mail_heck,ex@example.com,https://github.com/git_check"),
         Student("3,Иванов,Иван,Иванович,,@ivan2002,,https://github.com/ivan_200002"),
         Student("4,Surname,Name,SecondName,,,,https://gitlab.com/user"),
-        Student("5,Вишня,Олег,Петросович,,,cherry@mail.com,")
+        Student("5,Вишня,Олег,Петросович,,,cherry@mail.com,"),
+        Student("5.5,Вишня2,Олег2,Петросович2,,,cherry2@mail.com,"),
     )
 
     students.forEach { it.show() }
