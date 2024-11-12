@@ -1,5 +1,5 @@
 class Student (
-    val ID: Int,
+    override val id: Int,
     name: String,
     surname: String,
     secondname: String,
@@ -7,27 +7,7 @@ class Student (
     telegram: String? = null,
     email: String? = null,
     git: String? = null
-)
-    {
-        companion object {
-            private val phoneRegex = Regex("""^\+?[0-9]{10,15}$""")
-            fun CheckPhone(value: String?) = value == null || phoneRegex.matches(value)
-
-            private val nameRegex = Regex("""^[\p{L}-]+$""")
-            fun CheckName(value: String) = nameRegex.matches(value)
-
-            private val telegramRegex = Regex("""^@\w{5,32}$""")
-            fun CheckTelegram(value: String?) = value == null || telegramRegex.matches(value)
-
-            private val emailRegex = Regex("""^[A-Za-z0-9_+-]+(\.[A-Za-z0-9_+-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)+$""")
-            fun CheckEmail(value: String?) = value == null || emailRegex.matches(value)
-
-            private val gitRegex = Regex("""^(https?://)?([A-Za-z0-9]+\.)?[A-Za-z0-9]+\.[A-Za-z0-9]+/[A-Za-z0-9_-]+/?$""")
-            fun CheckGit(value: String?) = value == null || gitRegex.matches(value)
-
-            fun CheckSecondname(value: String) = value.isEmpty() || CheckName(value)
-
-        }
+): SudentAbst(){
         var name = name
         get() = field
         set(value) {
@@ -67,7 +47,7 @@ class Student (
             else throw IllegalArgumentException("Email adress is invalid")
         }
 
-        var git = git
+        override var git = git
         get() = field
         set(value) {
             if (CheckGit(value)) field = value
@@ -128,7 +108,7 @@ class Student (
             row[6].ifEmpty { null },
             row[7].ifEmpty { null }
         )
-        
+        // 3
         fun getInfoSt() : String {
             val contactText = mapOf(
                 "phone" to "номер телефона",
@@ -147,30 +127,28 @@ class Student (
             else if (telegram != null) Pair("telegram", telegram)
             else if (email != null) Pair("email", email)
             else null
+        //3
 
         override fun toString(): String {
-            var str = "[ID $ID] $surname $name $secondname"
+            var str = "[ID $id] $surname $name $secondname"
             if (phone != null) str += "\nНомер телефона: $phone"
             if (telegram != null) str += "\nTelegram: $telegram"
             if (email != null) str += "\nEmail: $email"
             if (git != null) str += "\nGit: $git"
             return "$str\n"
         }
-        fun show() = println(this.toString())
-        
+
         fun anyGit(): Boolean {
             val result = git != null
             println("У студента $surname $name $secondname гит ${if (result) "при" else "от"}сутствует!")
             return result
         }
-        
         fun anyContact(): Boolean {
             val result = phone != null || telegram != null || email != null
             println("Студент $surname $name $secondname , контакты:  ${if (result) "ЕСТЬ" else "НЕТ"}")
             return result
         }
-        
-         fun setContacts(hashMap: Map<String, String?>) {
+        fun setContacts(hashMap: Map<String, String?>) {
             if (hashMap.containsKey("phone"))
                 phone = hashMap["phone"]
             if (hashMap.containsKey("telegram"))
@@ -178,9 +156,7 @@ class Student (
             if (hashMap.containsKey("email"))
                 email = hashMap["email"]
         }
-
     }
-
     
 fun main() {
     val students = mutableListOf(
